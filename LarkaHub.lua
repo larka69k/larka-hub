@@ -1,31 +1,43 @@
 --========================================================--
---                      LARKA HUB
+--                       LARKA HUB
+--                    Compact Edition
 --========================================================--
 
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 
-local player = Players.LocalPlayer
+local Player = Players.LocalPlayer
 
 --========================================================--
---                      LIENS RAW
+--                     CONFIGURATION
 --========================================================--
 
-local MACRO_URL =
-    "https://raw.githubusercontent.com/larka69k/larka-hub/main/MacroSandNoobIncremental.lua"
+local Scripts = {
 
-local SCRIPT_2_URL = ""
-local SCRIPT_3_URL = ""
+    {
+        Name = "Macro Sand Noob Inc",
+        Description = "Macro automatique pour Sand Noob Incremental.",
+        URL = "https://raw.githubusercontent.com/larka69k/larka-hub/main/MacroSandNoobIncremental.lua"
+    },
+
+    {
+        Name = "Script 2",
+        Description = "Description du Script 2.",
+        URL = ""
+    },
+
+    {
+        Name = "Script 3",
+        Description = "Description du Script 3.",
+        URL = ""
+    },
+
+}
+
+local SelectedScript = Scripts[1]
 
 --========================================================--
---                     VARIABLES
---========================================================--
-
-local currentURL = MACRO_URL
-local currentName = "Macro Sand Noob Inc"
-
---========================================================--
---                       GUI
+--                         GUI
 --========================================================--
 
 local ScreenGui = Instance.new("ScreenGui")
@@ -38,370 +50,530 @@ pcall(function()
 end)
 
 if not ScreenGui.Parent then
-    ScreenGui.Parent = player:WaitForChild("PlayerGui")
+    ScreenGui.Parent = Player:WaitForChild("PlayerGui")
 end
 
 --========================================================--
---                  BOUTON MINI
+--                 BOUTON FLOTTANT
 --========================================================--
 
-local MiniButton = Instance.new("TextButton")
-MiniButton.Parent = ScreenGui
-MiniButton.Size = UDim2.new(0, 55, 0, 55)
-MiniButton.Position = UDim2.new(0, 20, 0.5, -27)
-MiniButton.BackgroundColor3 = Color3.fromRGB(35, 35, 45)
-MiniButton.BorderSizePixel = 0
-MiniButton.Text = "L"
-MiniButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-MiniButton.TextSize = 24
-MiniButton.Font = Enum.Font.GothamBold
-MiniButton.Visible = false
-MiniButton.ZIndex = 10
+local FloatingButton = Instance.new("TextButton")
+FloatingButton.Parent = ScreenGui
 
-local MiniCorner = Instance.new("UICorner")
-MiniCorner.CornerRadius = UDim.new(1, 0)
-MiniCorner.Parent = MiniButton
+FloatingButton.Size = UDim2.new(0, 48, 0, 48)
+FloatingButton.Position = UDim2.new(0, 20, 0.5, -24)
+
+FloatingButton.BackgroundColor3 = Color3.fromRGB(20, 20, 28)
+FloatingButton.BorderSizePixel = 0
+
+FloatingButton.Text = "L"
+FloatingButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+FloatingButton.TextSize = 24
+FloatingButton.Font = Enum.Font.GothamBold
+
+FloatingButton.AutoButtonColor = false
+FloatingButton.ZIndex = 20
+
+local FloatingCorner = Instance.new("UICorner")
+FloatingCorner.CornerRadius = UDim.new(1, 0)
+FloatingCorner.Parent = FloatingButton
+
+local FloatingStroke = Instance.new("UIStroke")
+FloatingStroke.Parent = FloatingButton
+FloatingStroke.Thickness = 2
+FloatingStroke.Color = Color3.fromRGB(130, 80, 255)
 
 --========================================================--
---                  FENÊTRE PRINCIPALE
+--                   FENÊTRE PRINCIPALE
 --========================================================--
 
 local Main = Instance.new("Frame")
 Main.Parent = ScreenGui
-Main.Size = UDim2.new(0, 470, 0, 350)
-Main.Position = UDim2.new(0.5, -235, 0.5, -175)
-Main.BackgroundColor3 = Color3.fromRGB(20, 20, 27)
+
+Main.Size = UDim2.new(0, 540, 0, 330)
+Main.Position = UDim2.new(0.5, -270, 0.5, -165)
+
+Main.BackgroundColor3 = Color3.fromRGB(17, 17, 23)
 Main.BorderSizePixel = 0
 
 local MainCorner = Instance.new("UICorner")
-MainCorner.CornerRadius = UDim.new(0, 16)
+MainCorner.CornerRadius = UDim.new(0, 14)
 MainCorner.Parent = Main
 
---========================================================--
---                       BARRE DU HAUT
---========================================================--
-
-local TopBar = Instance.new("Frame")
-TopBar.Parent = Main
-TopBar.Size = UDim2.new(1, 0, 0, 65)
-TopBar.BackgroundColor3 = Color3.fromRGB(28, 28, 38)
-TopBar.BorderSizePixel = 0
-
-local TopCorner = Instance.new("UICorner")
-TopCorner.CornerRadius = UDim.new(0, 16)
-TopCorner.Parent = TopBar
+local MainStroke = Instance.new("UIStroke")
+MainStroke.Parent = Main
+MainStroke.Thickness = 1
+MainStroke.Color = Color3.fromRGB(50, 50, 65)
 
 --========================================================--
---                         TITRE
+--                         HEADER
 --========================================================--
+
+local Header = Instance.new("Frame")
+Header.Parent = Main
+
+Header.Size = UDim2.new(1, 0, 0, 58)
+
+Header.BackgroundColor3 = Color3.fromRGB(23, 23, 31)
+Header.BorderSizePixel = 0
+
+local HeaderCorner = Instance.new("UICorner")
+HeaderCorner.CornerRadius = UDim.new(0, 14)
+HeaderCorner.Parent = Header
 
 local Title = Instance.new("TextLabel")
-Title.Parent = TopBar
-Title.Position = UDim2.new(0, 20, 0, 8)
-Title.Size = UDim2.new(1, -90, 0, 30)
+Title.Parent = Header
+
+Title.Position = UDim2.new(0, 18, 0, 7)
+Title.Size = UDim2.new(1, -70, 0, 27)
+
 Title.BackgroundTransparency = 1
 Title.Text = "LARKA HUB"
+
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.TextSize = 23
+Title.TextSize = 21
 Title.Font = Enum.Font.GothamBold
 Title.TextXAlignment = Enum.TextXAlignment.Left
 
 local SubTitle = Instance.new("TextLabel")
-SubTitle.Parent = TopBar
-SubTitle.Position = UDim2.new(0, 20, 0, 35)
-SubTitle.Size = UDim2.new(1, -90, 0, 20)
+SubTitle.Parent = Header
+
+SubTitle.Position = UDim2.new(0, 19, 0, 32)
+SubTitle.Size = UDim2.new(1, -80, 0, 18)
+
 SubTitle.BackgroundTransparency = 1
 SubTitle.Text = "Script Hub"
-SubTitle.TextColor3 = Color3.fromRGB(145, 145, 155)
-SubTitle.TextSize = 12
+
+SubTitle.TextColor3 = Color3.fromRGB(125, 125, 140)
+SubTitle.TextSize = 11
 SubTitle.Font = Enum.Font.Gotham
 SubTitle.TextXAlignment = Enum.TextXAlignment.Left
 
 --========================================================--
---                    BOUTON MASQUER
+--                    BOUTON FERMER
 --========================================================--
 
-local HideButton = Instance.new("TextButton")
-HideButton.Parent = TopBar
-HideButton.Size = UDim2.new(0, 40, 0, 40)
-HideButton.Position = UDim2.new(1, -50, 0, 12)
-HideButton.BackgroundColor3 = Color3.fromRGB(45, 45, 58)
-HideButton.BorderSizePixel = 0
-HideButton.Text = "−"
-HideButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-HideButton.TextSize = 24
-HideButton.Font = Enum.Font.GothamBold
+local CloseButton = Instance.new("TextButton")
+CloseButton.Parent = Header
 
-local HideCorner = Instance.new("UICorner")
-HideCorner.CornerRadius = UDim.new(0, 10)
-HideCorner.Parent = HideButton
+CloseButton.Size = UDim2.new(0, 32, 0, 32)
+CloseButton.Position = UDim2.new(1, -42, 0, 13)
 
---========================================================--
---                       ONGLET
---========================================================--
+CloseButton.BackgroundColor3 = Color3.fromRGB(38, 38, 48)
+CloseButton.BorderSizePixel = 0
 
-local Tabs = Instance.new("Frame")
-Tabs.Parent = Main
-Tabs.Position = UDim2.new(0, 15, 0, 80)
-Tabs.Size = UDim2.new(1, -30, 0, 45)
-Tabs.BackgroundTransparency = 1
+CloseButton.Text = "×"
+CloseButton.TextColor3 = Color3.fromRGB(220, 220, 225)
+CloseButton.TextSize = 21
+CloseButton.Font = Enum.Font.GothamBold
 
-local function createTab(text, x)
-
-    local Button = Instance.new("TextButton")
-    Button.Parent = Tabs
-    Button.Position = UDim2.new(0, x, 0, 0)
-    Button.Size = UDim2.new(0, 135, 0, 42)
-
-    Button.BackgroundColor3 = Color3.fromRGB(35, 35, 46)
-    Button.BorderSizePixel = 0
-
-    Button.Text = text
-    Button.TextColor3 = Color3.fromRGB(205, 205, 215)
-    Button.TextSize = 13
-    Button.Font = Enum.Font.GothamBold
-
-    local Corner = Instance.new("UICorner")
-    Corner.CornerRadius = UDim.new(0, 10)
-    Corner.Parent = Button
-
-    return Button
-end
-
-local MacroTab = createTab(
-    "Macro Sand Noob Inc",
-    0
-)
-
-local Script2Tab = createTab(
-    "Script 2",
-    145
-)
-
-local Script3Tab = createTab(
-    "Script 3",
-    290
-)
+local CloseCorner = Instance.new("UICorner")
+CloseCorner.CornerRadius = UDim.new(0, 8)
+CloseCorner.Parent = CloseButton
 
 --========================================================--
---                       CONTENU
+--                    BARRE RECHERCHE
 --========================================================--
 
-local Content = Instance.new("Frame")
-Content.Parent = Main
-Content.Position = UDim2.new(0, 15, 0, 140)
-Content.Size = UDim2.new(1, -30, 0, 190)
-Content.BackgroundColor3 = Color3.fromRGB(27, 27, 36)
-Content.BorderSizePixel = 0
+local SearchBox = Instance.new("TextBox")
+SearchBox.Parent = Main
 
-local ContentCorner = Instance.new("UICorner")
-ContentCorner.CornerRadius = UDim.new(0, 12)
-ContentCorner.Parent = Content
+SearchBox.Position = UDim2.new(0, 15, 0, 70)
+SearchBox.Size = UDim2.new(0, 190, 0, 34)
+
+SearchBox.BackgroundColor3 = Color3.fromRGB(27, 27, 36)
+SearchBox.BorderSizePixel = 0
+
+SearchBox.PlaceholderText = "Rechercher un script..."
+SearchBox.PlaceholderColor3 = Color3.fromRGB(100, 100, 110)
+
+SearchBox.Text = ""
+SearchBox.TextColor3 = Color3.fromRGB(235, 235, 240)
+SearchBox.TextSize = 12
+SearchBox.Font = Enum.Font.Gotham
+
+local SearchCorner = Instance.new("UICorner")
+SearchCorner.CornerRadius = UDim.new(0, 8)
+SearchCorner.Parent = SearchBox
+
+local SearchPadding = Instance.new("UIPadding")
+SearchPadding.Parent = SearchBox
+SearchPadding.PaddingLeft = UDim.new(0, 10)
 
 --========================================================--
---                    NOM DU SCRIPT
+--                    LISTE DES SCRIPTS
 --========================================================--
 
-local ScriptTitle = Instance.new("TextLabel")
-ScriptTitle.Parent = Content
-ScriptTitle.Position = UDim2.new(0, 20, 0, 18)
-ScriptTitle.Size = UDim2.new(1, -40, 0, 30)
+local ScriptList = Instance.new("ScrollingFrame")
+ScriptList.Parent = Main
 
-ScriptTitle.BackgroundTransparency = 1
-ScriptTitle.Text = "Macro Sand Noob Inc"
-ScriptTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-ScriptTitle.TextSize = 19
-ScriptTitle.Font = Enum.Font.GothamBold
-ScriptTitle.TextXAlignment = Enum.TextXAlignment.Left
+ScriptList.Position = UDim2.new(0, 15, 0, 112)
+ScriptList.Size = UDim2.new(0, 190, 0, 202)
+
+ScriptList.BackgroundColor3 = Color3.fromRGB(21, 21, 28)
+ScriptList.BorderSizePixel = 0
+
+ScriptList.ScrollBarThickness = 3
+ScriptList.ScrollBarImageColor3 = Color3.fromRGB(100, 70, 180)
+
+ScriptList.CanvasSize = UDim2.new(0, 0, 0, 0)
+
+local ListCorner = Instance.new("UICorner")
+ListCorner.CornerRadius = UDim.new(0, 10)
+ListCorner.Parent = ScriptList
+
+local ListLayout = Instance.new("UIListLayout")
+ListLayout.Parent = ScriptList
+ListLayout.Padding = UDim.new(0, 5)
+ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+local ListPadding = Instance.new("UIPadding")
+ListPadding.Parent = ScriptList
+
+ListPadding.PaddingTop = UDim.new(0, 7)
+ListPadding.PaddingLeft = UDim.new(0, 7)
+ListPadding.PaddingRight = UDim.new(0, 7)
+
+--========================================================--
+--                    PANNEAU DROIT
+--========================================================--
+
+local Details = Instance.new("Frame")
+Details.Parent = Main
+
+Details.Position = UDim2.new(0, 220, 0, 70)
+Details.Size = UDim2.new(1, -235, 0, 244)
+
+Details.BackgroundColor3 = Color3.fromRGB(24, 24, 32)
+Details.BorderSizePixel = 0
+
+local DetailsCorner = Instance.new("UICorner")
+DetailsCorner.CornerRadius = UDim.new(0, 10)
+DetailsCorner.Parent = Details
+
+--========================================================--
+--                     NOM SCRIPT
+--========================================================--
+
+local SelectedName = Instance.new("TextLabel")
+SelectedName.Parent = Details
+
+SelectedName.Position = UDim2.new(0, 18, 0, 18)
+SelectedName.Size = UDim2.new(1, -36, 0, 35)
+
+SelectedName.BackgroundTransparency = 1
+SelectedName.Text = SelectedScript.Name
+
+SelectedName.TextColor3 = Color3.fromRGB(255, 255, 255)
+SelectedName.TextSize = 20
+SelectedName.Font = Enum.Font.GothamBold
+SelectedName.TextXAlignment = Enum.TextXAlignment.Left
+SelectedName.TextWrapped = true
 
 --========================================================--
 --                    DESCRIPTION
 --========================================================--
 
-local Description = Instance.new("TextLabel")
-Description.Parent = Content
-Description.Position = UDim2.new(0, 20, 0, 48)
-Description.Size = UDim2.new(1, -40, 0, 25)
+local SelectedDescription = Instance.new("TextLabel")
+SelectedDescription.Parent = Details
 
-Description.BackgroundTransparency = 1
-Description.Text = "Macro automatique"
-Description.TextColor3 = Color3.fromRGB(145, 145, 155)
-Description.TextSize = 12
-Description.Font = Enum.Font.Gotham
-Description.TextXAlignment = Enum.TextXAlignment.Left
+SelectedDescription.Position = UDim2.new(0, 18, 0, 60)
+SelectedDescription.Size = UDim2.new(1, -36, 0, 70)
 
---========================================================--
---                     BOUTON LOAD
---========================================================--
+SelectedDescription.BackgroundTransparency = 1
+SelectedDescription.Text = SelectedScript.Description
 
-local LoadButton = Instance.new("TextButton")
-LoadButton.Parent = Content
-LoadButton.Position = UDim2.new(0, 20, 0, 90)
-LoadButton.Size = UDim2.new(1, -40, 0, 55)
+SelectedDescription.TextColor3 = Color3.fromRGB(145, 145, 155)
+SelectedDescription.TextSize = 12
+SelectedDescription.Font = Enum.Font.Gotham
 
-LoadButton.BackgroundColor3 = Color3.fromRGB(0, 170, 85)
-LoadButton.BorderSizePixel = 0
-
-LoadButton.Text = "CHARGER"
-LoadButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-LoadButton.TextSize = 16
-LoadButton.Font = Enum.Font.GothamBold
-
-local LoadCorner = Instance.new("UICorner")
-LoadCorner.CornerRadius = UDim.new(0, 10)
-LoadCorner.Parent = LoadButton
+SelectedDescription.TextWrapped = true
+SelectedDescription.TextXAlignment = Enum.TextXAlignment.Left
+SelectedDescription.TextYAlignment = Enum.TextYAlignment.Top
 
 --========================================================--
---                   CHARGEMENT
+--                     EXECUTE
 --========================================================--
 
-local function loadScript(url)
+local ExecuteButton = Instance.new("TextButton")
+ExecuteButton.Parent = Details
 
-    if url == nil or url == "" then
+ExecuteButton.Position = UDim2.new(0, 18, 1, -58)
+ExecuteButton.Size = UDim2.new(1, -36, 0, 42)
 
-        LoadButton.Text = "LIEN MANQUANT"
+ExecuteButton.BackgroundColor3 = Color3.fromRGB(105, 65, 210)
+ExecuteButton.BorderSizePixel = 0
 
-        task.wait(1)
+ExecuteButton.Text = "EXECUTE"
+ExecuteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-        LoadButton.Text = "CHARGER"
+ExecuteButton.TextSize = 14
+ExecuteButton.Font = Enum.Font.GothamBold
 
-        return
-    end
+local ExecuteCorner = Instance.new("UICorner")
+ExecuteCorner.CornerRadius = UDim.new(0, 9)
+ExecuteCorner.Parent = ExecuteButton
 
-    LoadButton.Text = "CHARGEMENT..."
+--========================================================--
+--                RAFRAÎCHIR LA LISTE
+--========================================================--
 
-    local success, errorMessage = pcall(function()
+local function UpdateCanvas()
 
-        local source = game:HttpGet(url)
-        local func = loadstring(source)
+    task.wait()
 
-        if func then
-            func()
-        else
-            error("Impossible de compiler le script.")
-        end
-
-    end)
-
-    if success then
-
-        LoadButton.Text = "CHARGÉ !"
-
-    else
-
-        LoadButton.Text = "ERREUR"
-
-        warn(
-            "Larka Hub : "
-            .. tostring(errorMessage)
-        )
-
-    end
-
-    task.wait(1)
-
-    LoadButton.Text = "CHARGER"
+    ScriptList.CanvasSize = UDim2.new(
+        0,
+        0,
+        0,
+        ListLayout.AbsoluteContentSize.Y + 15
+    )
 
 end
 
 --========================================================--
---                    ONGLET MACRO
+--                  SÉLECTION SCRIPT
 --========================================================--
 
-MacroTab.MouseButton1Click:Connect(function()
+local function SelectScript(scriptData)
 
-    currentURL = MACRO_URL
-    currentName = "Macro Sand Noob Inc"
+    SelectedScript = scriptData
 
-    ScriptTitle.Text = currentName
-    Description.Text = "Macro automatique"
+    SelectedName.Text = scriptData.Name
+    SelectedDescription.Text = scriptData.Description
+
+end
+
+--========================================================--
+--                   CRÉER UN ITEM
+--========================================================--
+
+local function CreateScriptButton(scriptData)
+
+    local Button = Instance.new("TextButton")
+    Button.Parent = ScriptList
+
+    Button.Size = UDim2.new(1, 0, 0, 38)
+
+    Button.BackgroundColor3 = Color3.fromRGB(29, 29, 38)
+    Button.BorderSizePixel = 0
+
+    Button.Text = scriptData.Name
+
+    Button.TextColor3 = Color3.fromRGB(205, 205, 215)
+    Button.TextSize = 11
+    Button.Font = Enum.Font.GothamMedium
+
+    Button.TextXAlignment = Enum.TextXAlignment.Left
+
+    local Padding = Instance.new("UIPadding")
+    Padding.Parent = Button
+    Padding.PaddingLeft = UDim.new(0, 10)
+
+    local Corner = Instance.new("UICorner")
+    Corner.CornerRadius = UDim.new(0, 7)
+    Corner.Parent = Button
+
+    Button.MouseButton1Click:Connect(function()
+
+        SelectScript(scriptData)
+
+    end)
+
+    return Button
+
+end
+
+--========================================================--
+--                 CONSTRUIRE LA LISTE
+--========================================================--
+
+local function BuildList(filter)
+
+    for _, child in ipairs(ScriptList:GetChildren()) do
+
+        if child:IsA("TextButton") then
+            child:Destroy()
+        end
+
+    end
+
+    filter = string.lower(filter or "")
+
+    for _, scriptData in ipairs(Scripts) do
+
+        local nameMatch =
+            string.find(
+                string.lower(scriptData.Name),
+                filter,
+                1,
+                true
+            )
+
+        if filter == "" or nameMatch then
+
+            CreateScriptButton(scriptData)
+
+        end
+
+    end
+
+    UpdateCanvas()
+
+end
+
+BuildList("")
+
+--========================================================--
+--                      RECHERCHE
+--========================================================--
+
+SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
+
+    BuildList(SearchBox.Text)
 
 end)
 
 --========================================================--
---                    ONGLET SCRIPT 2
+--                      EXECUTE
 --========================================================--
 
-Script2Tab.MouseButton1Click:Connect(function()
+ExecuteButton.MouseButton1Click:Connect(function()
 
-    currentURL = SCRIPT_2_URL
-    currentName = "Script 2"
+    if not SelectedScript.URL
+    or SelectedScript.URL == "" then
 
-    ScriptTitle.Text = currentName
-    Description.Text = "Script 2"
+        ExecuteButton.Text = "LIEN MANQUANT"
 
-end)
+        task.wait(1)
 
---========================================================--
---                    ONGLET SCRIPT 3
---========================================================--
+        ExecuteButton.Text = "EXECUTE"
 
-Script3Tab.MouseButton1Click:Connect(function()
+        return
 
-    currentURL = SCRIPT_3_URL
-    currentName = "Script 3"
+    end
 
-    ScriptTitle.Text = currentName
-    Description.Text = "Script 3"
-
-end)
-
---========================================================--
---                    BOUTON CHARGER
---========================================================--
-
-LoadButton.MouseButton1Click:Connect(function()
+    ExecuteButton.Text = "LOADING..."
 
     task.spawn(function()
-        loadScript(currentURL)
+
+        local success, errorMessage = pcall(function()
+
+            local Source = game:HttpGet(
+                SelectedScript.URL
+            )
+
+            local Function = loadstring(Source)
+
+            if not Function then
+                error("Impossible de charger le script.")
+            end
+
+            Function()
+
+        end)
+
+        if success then
+
+            ExecuteButton.Text = "LOADED ✓"
+
+        else
+
+            ExecuteButton.Text = "ERROR"
+
+            warn(
+                "Larka Hub : "
+                .. tostring(errorMessage)
+            )
+
+        end
+
+        task.wait(1)
+
+        ExecuteButton.Text = "EXECUTE"
+
     end)
 
 end)
 
 --========================================================--
---                 MASQUER LE HUB
+--                 AFFICHER / CACHER
 --========================================================--
 
-HideButton.MouseButton1Click:Connect(function()
+local function ToggleHub()
+
+    Main.Visible = not Main.Visible
+
+end
+
+FloatingButton.MouseButton1Click:Connect(function()
+
+    ToggleHub()
+
+end)
+
+CloseButton.MouseButton1Click:Connect(function()
 
     Main.Visible = false
-    MiniButton.Visible = true
 
 end)
 
 --========================================================--
---                AFFICHER LE HUB
---========================================================--
-
-MiniButton.MouseButton1Click:Connect(function()
-
-    MiniButton.Visible = false
-    Main.Visible = true
-
-end)
-
---========================================================--
---                    FENÊTRE MOBILE
+--             BOUTON FLOTTANT DÉPLAÇABLE
 --========================================================--
 
 local dragging = false
 local dragStart
-local startPosition
+local buttonStartPosition
+local moved = false
 
-TopBar.InputBegan:Connect(function(input)
+FloatingButton.InputBegan:Connect(function(input)
 
     if input.UserInputType == Enum.UserInputType.MouseButton1
     or input.UserInputType == Enum.UserInputType.Touch then
 
         dragging = true
+        moved = false
+
         dragStart = input.Position
-        startPosition = Main.Position
+        buttonStartPosition = FloatingButton.Position
 
     end
 
 end)
 
-TopBar.InputEnded:Connect(function(input)
+FloatingButton.InputChanged:Connect(function(input)
+
+    if input.UserInputType == Enum.UserInputType.MouseMovement
+    or input.UserInputType == Enum.UserInputType.Touch then
+
+        if dragging then
+
+            local delta =
+                input.Position - dragStart
+
+            if math.abs(delta.X) > 5
+            or math.abs(delta.Y) > 5 then
+
+                moved = true
+
+            end
+
+            FloatingButton.Position = UDim2.new(
+                buttonStartPosition.X.Scale,
+                buttonStartPosition.X.Offset + delta.X,
+
+                buttonStartPosition.Y.Scale,
+                buttonStartPosition.Y.Offset + delta.Y
+            )
+
+        end
+
+    end
+
+end)
+
+FloatingButton.InputEnded:Connect(function(input)
 
     if input.UserInputType == Enum.UserInputType.MouseButton1
     or input.UserInputType == Enum.UserInputType.Touch then
@@ -412,23 +584,57 @@ TopBar.InputEnded:Connect(function(input)
 
 end)
 
+--========================================================--
+--             FENÊTRE PRINCIPALE DÉPLAÇABLE
+--========================================================--
+
+local MainDragging = false
+local MainDragStart
+local MainStartPosition
+
+Header.InputBegan:Connect(function(input)
+
+    if input.UserInputType == Enum.UserInputType.MouseButton1
+    or input.UserInputType == Enum.UserInputType.Touch then
+
+        MainDragging = true
+
+        MainDragStart = input.Position
+        MainStartPosition = Main.Position
+
+    end
+
+end)
+
+Header.InputEnded:Connect(function(input)
+
+    if input.UserInputType == Enum.UserInputType.MouseButton1
+    or input.UserInputType == Enum.UserInputType.Touch then
+
+        MainDragging = false
+
+    end
+
+end)
+
 UserInputService.InputChanged:Connect(function(input)
 
-    if not dragging then
+    if not MainDragging then
         return
     end
 
     if input.UserInputType == Enum.UserInputType.MouseMovement
     or input.UserInputType == Enum.UserInputType.Touch then
 
-        local delta = input.Position - dragStart
+        local delta =
+            input.Position - MainDragStart
 
         Main.Position = UDim2.new(
-            startPosition.X.Scale,
-            startPosition.X.Offset + delta.X,
+            MainStartPosition.X.Scale,
+            MainStartPosition.X.Offset + delta.X,
 
-            startPosition.Y.Scale,
-            startPosition.Y.Offset + delta.Y
+            MainStartPosition.Y.Scale,
+            MainStartPosition.Y.Offset + delta.Y
         )
 
     end
@@ -439,4 +645,4 @@ end)
 --                         FIN
 --========================================================--
 
-print("LARKA HUB chargé avec succès.")
+print("LARKA HUB chargé !")
