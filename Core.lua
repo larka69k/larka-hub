@@ -1,169 +1,205 @@
---==================================================
--- LH HUB - CORE
---==================================================
+--========================================================--
+--                         LH CORE
+--========================================================--
 
 local Core = {}
 
---==================================================
--- HUB SETTINGS
---==================================================
+--========================================================--
+--                         COLORS
+--========================================================--
 
-Core.Settings = {
+local Colors = {
 
-    -- Général
-    Enabled = true,
-    Debug = false,
+    Main = Color3.fromRGB(45, 100, 220),
 
-    -- Délais
-    StartDelay = 5,
-    ActionDelay = 1,
-    ClickDelay = 0.2,
+    Secondary = Color3.fromRGB(25, 55, 130),
 
-    -- Mouvement
-    WalkSpeed = 16,
+    Accent = Color3.fromRGB(80, 140, 255),
 
-    -- Clic
-    ClickRadius = 10,
+    Background = Color3.fromRGB(14, 14, 20),
 
-    -- Répétition
-    RepeatEnabled = true,
-    RepeatCount = 1,
+    Panel = Color3.fromRGB(23, 23, 31),
+
+    Header = Color3.fromRGB(22, 22, 30),
+
+    Text = Color3.fromRGB(255, 255, 255),
+
+    SubText = Color3.fromRGB(145, 145, 155)
 
 }
 
---==================================================
--- GAME SETTINGS
---==================================================
+--========================================================--
+--                      HUB SETTINGS
+--========================================================--
 
-Core.Game = {
+local HubSettings = {
 
-    Name = "Default",
+    ShowFPS = true,
 
-    -- Coordonnées
-    Coordinates = {
-        Position1 = Vector3.new(0, 0, 0),
-        Position2 = Vector3.new(0, 0, 0),
-        Position3 = Vector3.new(0, 0, 0),
-    },
+    ShowPing = true,
 
-    -- Délais propres au jeu
-    Delays = {
-        Position1 = 0,
-        Position2 = 0,
-        Position3 = 0,
-    },
+    SearchEnabled = true
 
 }
 
---==================================================
--- UNIVERSAL SETTINGS
---==================================================
+--========================================================--
+--                       GET COLOR
+--========================================================--
 
-Core.Universal = {
+function Core:GetColor(Name)
 
-    AutoStart = false,
-    AutoRepeat = false,
-
-}
-
---==================================================
--- GET SETTING
---==================================================
-
-function Core:GetSetting(Name)
-
-    return self.Settings[Name]
+    return Colors[Name]
 
 end
 
---==================================================
--- SET SETTING
---==================================================
+--========================================================--
+--                       SET COLOR
+--========================================================--
 
-function Core:SetSetting(Name, Value)
+function Core:SetColor(Name, Value)
 
-    if self.Settings[Name] ~= nil then
-        self.Settings[Name] = Value
-        return true
+    if typeof(Value) ~= "Color3" then
+        return false
     end
 
-    warn("[LH HUB] Setting not found: " .. tostring(Name))
-
-    return false
-
-end
-
---==================================================
--- GET GAME SETTING
---==================================================
-
-function Core:GetGameSetting(Name)
-
-    return self.Game[Name]
-
-end
-
---==================================================
--- SET GAME SETTING
---==================================================
-
-function Core:SetGameSetting(Name, Value)
-
-    if self.Game[Name] ~= nil then
-        self.Game[Name] = Value
-        return true
+    if Colors[Name] == nil then
+        return false
     end
 
-    warn("[LH HUB] Game setting not found: " .. tostring(Name))
+    Colors[Name] = Value
 
-    return false
-
-end
-
---==================================================
--- GET COORDINATE
---==================================================
-
-function Core:GetCoordinate(Name)
-
-    return self.Game.Coordinates[Name]
+    return true
 
 end
 
---==================================================
--- SET COORDINATE
---==================================================
+--========================================================--
+--                    GET ALL COLORS
+--========================================================--
 
-function Core:SetCoordinate(Name, Position)
+function Core:GetColors()
 
-    self.Game.Coordinates[Name] = Position
+    local Copy = {}
 
-end
+    for Name, Value in pairs(Colors) do
 
---==================================================
--- GET DELAY
---==================================================
+        Copy[Name] = Value
 
-function Core:GetDelay(Name)
+    end
 
-    return self.Game.Delays[Name]
+    return Copy
 
 end
 
---==================================================
--- SET DELAY
---==================================================
+--========================================================--
+--                   GET HUB SETTING
+--========================================================--
 
-function Core:SetDelay(Name, Value)
+function Core:GetHubSetting(Name)
 
-    self.Game.Delays[Name] = Value
+    return HubSettings[Name]
 
 end
 
---==================================================
--- CORE READY
---==================================================
+--========================================================--
+--                   SET HUB SETTING
+--========================================================--
 
-print("[LH HUB] Core loaded.")
+function Core:SetHubSetting(Name, Value)
+
+    if HubSettings[Name] == nil then
+        return false
+    end
+
+    HubSettings[Name] = Value
+
+    return true
+
+end
+
+--========================================================--
+--                 GET ALL HUB SETTINGS
+--========================================================--
+
+function Core:GetHubSettings()
+
+    local Copy = {}
+
+    for Name, Value in pairs(HubSettings) do
+
+        Copy[Name] = Value
+
+    end
+
+    return Copy
+
+end
+
+--========================================================--
+--                     RESET COLORS
+--========================================================--
+
+local DefaultColors = {
+
+    Main = Color3.fromRGB(45, 100, 220),
+
+    Secondary = Color3.fromRGB(25, 55, 130),
+
+    Accent = Color3.fromRGB(80, 140, 255),
+
+    Background = Color3.fromRGB(14, 14, 20),
+
+    Panel = Color3.fromRGB(23, 23, 31),
+
+    Header = Color3.fromRGB(22, 22, 30),
+
+    Text = Color3.fromRGB(255, 255, 255),
+
+    SubText = Color3.fromRGB(145, 145, 155)
+
+}
+
+function Core:ResetColors()
+
+    for Name, Value in pairs(DefaultColors) do
+
+        Colors[Name] = Value
+
+    end
+
+end
+
+--========================================================--
+--                   RESET SETTINGS
+--========================================================--
+
+local DefaultSettings = {
+
+    ShowFPS = true,
+
+    ShowPing = true,
+
+    SearchEnabled = true
+
+}
+
+function Core:ResetHubSettings()
+
+    for Name, Value in pairs(DefaultSettings) do
+
+        HubSettings[Name] = Value
+
+    end
+
+end
+
+--========================================================--
+--                         VERSION
+--========================================================--
+
+Core.Version = "1.0.0"
+
+--========================================================--
+--                           END
+--========================================================--
 
 return Core
